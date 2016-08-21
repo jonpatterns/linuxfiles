@@ -1,6 +1,6 @@
 #!/usr/bin/perl
-#### pmount-lvm-all v0.000 experimental
-#### script to all mount lv (logical volumes), after they have been initialised
+#### pmount-lvm-all v0.001 experimental
+#### script to all mount lv (logical volumes) at /mnt/<vg_name>-<lv_name> (after they have been initialised)
 ## script fails if not root user
 
 use strict;
@@ -23,10 +23,10 @@ chomp @lvpara;
 #process each lv ($#lvpara is position of last entry (starting 0) -1 is empty
 #might clash if something else is already mounted at /mnt/<vg_name>-<lv_name> (perhaps unlikely)
 for $cnt (0 .. $#lvpara) {
-    $lvpara[$cnt] =~ s/^\s+//; #next lv str, left trim white space
+	$lvpara[$cnt] =~ s/^\s+//; #next lv str, left trim white space
 	$str = $lvpara[$cnt]; #next lv str -> str
 	mkdir("/mnt/".$str) unless (-d "/mnt/".$str); #mkdir unless it exists, (works with space in name)
-	`mount '/dev/mapper/$str' '/mnt/$str' \n`; #mount lv from /dev/mapper
+	`mount '/dev/mapper/$str' '/mnt/$str'`; #mount lv from /dev/mapper
 }
 
 exit;
